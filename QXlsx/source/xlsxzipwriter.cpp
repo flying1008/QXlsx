@@ -1,48 +1,76 @@
-// xlsxzipwriter.cpp
+﻿// xlsxzipwriter.cpp
 
 #include "xlsxzipwriter_p.h"
 
 #include <QtGlobal>
 #include <QDebug>
-#include <private/qzipwriter_p.h>
+#include <QFile>
 
 QT_BEGIN_NAMESPACE_XLSX
 
 ZipWriter::ZipWriter(const QString &filePath)
 {
-    m_writer = new QZipWriter(filePath, QIODevice::WriteOnly);
-    m_writer->setCompressionPolicy(QZipWriter::AutoCompress);
+#ifdef UNICODE
+    std::wstring strPath = filePath.toStdWString();
+    m_writer = CreateZip(strPath.c_str(),nullptr);
+#else
+    m_writer = CreateZip(strFile.toUtf8().constData(),nullptr);
+#endif
 }
 
 ZipWriter::ZipWriter(QIODevice *device)
 {
-    m_writer = new QZipWriter(device);
-    m_writer->setCompressionPolicy(QZipWriter::AutoCompress);
+    QFile *file = dynamic_cast<QFile*>(device);
+    if(nullptr != file)
+    {
+        QString strFile = file->fileName();
+        file->close();
+#ifdef UNICODE
+    m_writer = CreateZip(reinterpret_cast<const wchar_t*>(strFile.utf16()),nullptr);
+#else
+    m_writer = CreateZip(strFile.toUtf8().constData(),nullptr);
+#endif
+    }
+    else
+    {
+        m_writer =0;
+    }
 }
-
 ZipWriter::~ZipWriter()
 {
-    delete m_writer;
+    CloseZip( m_writer);
 }
 
 bool ZipWriter::error() const
 {
-    return m_writer->status() != QZipWriter::NoError;
+    return !IsZipHandleZ(m_writer);
 }
 
 void ZipWriter::addFile(const QString &filePath, QIODevice *device)
 {
-    m_writer->addFile(filePath, device);
+#ifdef UNICODE
+    std::wstring strFilePath = filePath.toStdWString();
+    ZipAdd(m_writer,strFilePath.c_str(),(void*)device->readAll().data(),device->size());
+#else
+    ZipAdd(m_writer,filePath.toUtf8().constData(),(void*)device->readAll().data(),device->size());
+#endif
+
 }
 
 void ZipWriter::addFile(const QString &filePath, const QByteArray &data)
 {
-    m_writer->addFile(filePath, data);
+#ifdef UNICODE
+    std::wstring strFilePath = filePath.toStdWString();
+    ZipAdd(m_writer,strFilePath.c_str(),(void*)data.data(),data.size());
+#else
+    ZipAdd(m_writer,filePath.toUtf8().constData(),(void*)data.data(),data.size());
+#endif
+
 }
 
 void ZipWriter::close()
 {
-    m_writer->close();
+    CloseZip( m_writer);
 }
 
 QT_END_NAMESPACE_XLSX

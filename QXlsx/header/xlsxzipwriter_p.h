@@ -1,4 +1,4 @@
-// xlsxzipwriter_p.h
+﻿// xlsxzipwriter_p.h
 
 #ifndef QXLSX_ZIPWRITER_H
 #define QXLSX_ZIPWRITER_H
@@ -9,7 +9,7 @@
 
 #include "xlsxglobal.h"
 
-class QZipWriter;
+#include "zip.h"
 
 QT_BEGIN_NAMESPACE_XLSX
 
@@ -26,7 +26,8 @@ public:
     void close();
 
 private:
-    QZipWriter *m_writer;
+    HZIP m_writer;
+    ZRESULT m_result;
 };
 
 QT_END_NAMESPACE_XLSX

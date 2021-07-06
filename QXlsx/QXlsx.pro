@@ -4,7 +4,6 @@ TARGET = QXlsx
 TEMPLATE = lib
 CONFIG += staticlib
 QT += core
-QT += gui-private
 
 #####################################################################
 # set debug/release build environment

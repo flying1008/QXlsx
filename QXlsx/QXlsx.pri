@@ -3,7 +3,6 @@
 ########################################
 
 QT += core
-QT += gui-private
 
 # TODO: Define your C++ version. c++14, c++17, etc.
 CONFIG += c++11
@@ -27,6 +26,14 @@ isEmpty(QXLSX_PARENTPATH) {
     message( $${QXLSX_PARENTPATH} )
 }
 
+isEmpty(QXLSX_ZIPPATH) {
+    message( 'QXLSX_ZIPPATH is empty. use default value.' )
+    QXLSX_ZIPPATH = $$PWD/../QXlsx/zip_utils/
+} else {
+    message( 'QXLSX_ZIPPATH is not empty.' )
+    message( $${QXLSX_ZIPPATH} )
+}
+
 isEmpty(QXLSX_HEADERPATH) {
     message( 'QXLSX_HEADERPATH is empty. use default value.' )
     QXLSX_HEADERPATH = $$PWD/../QXlsx/header/
@@ -43,9 +50,15 @@ isEmpty(QXLSX_SOURCEPATH) {
     message( $${QXLSX_SOURCEPATH} )
 }
 
-INCLUDEPATH += $$PWD
-INCLUDEPATH += $${QXLSX_PARENTPATH}
 INCLUDEPATH += $${QXLSX_HEADERPATH}
+INCLUDEPATH += $${QXLSX_ZIPPATH}
+
+
+win32
+{
+    LIBS += -lUser32
+}
+
 
 ########################################
 # source code 
@@ -97,7 +110,9 @@ $${QXLSX_HEADERPATH}xlsxworkbook_p.h \
 $${QXLSX_HEADERPATH}xlsxworksheet.h \
 $${QXLSX_HEADERPATH}xlsxworksheet_p.h \
 $${QXLSX_HEADERPATH}xlsxzipreader_p.h \
-$${QXLSX_HEADERPATH}xlsxzipwriter_p.h
+$${QXLSX_HEADERPATH}xlsxzipwriter_p.h \
+$${QXLSX_ZIPPATH}zip.h \
+$${QXLSX_ZIPPATH}unzip.h
 
 SOURCES += \
 $${QXLSX_SOURCEPATH}xlsxabstractooxmlfile.cpp \
@@ -132,8 +147,9 @@ $${QXLSX_SOURCEPATH}xlsxutility.cpp \
 $${QXLSX_SOURCEPATH}xlsxworkbook.cpp \
 $${QXLSX_SOURCEPATH}xlsxworksheet.cpp \
 $${QXLSX_SOURCEPATH}xlsxzipreader.cpp \
-$${QXLSX_SOURCEPATH}xlsxzipwriter.cpp
-
+$${QXLSX_SOURCEPATH}xlsxzipwriter.cpp \
+$${QXLSX_ZIPPATH}zip.cpp \
+$${QXLSX_ZIPPATH}unzip.cpp
 
 ########################################
 # custom setting for compiler & system

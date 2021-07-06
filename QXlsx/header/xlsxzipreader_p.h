@@ -1,9 +1,8 @@
-// xlsxzipreader_p.h
+﻿// xlsxzipreader_p.h
 
 #ifndef QXLSX_XLSXZIPREADER_P_H
 #define QXLSX_XLSXZIPREADER_P_H
 
-#include <QScopedPointer>
 #include <QStringList>
 #include <QIODevice>
 
@@ -13,7 +12,8 @@
  #include <QVector>
 #endif
 
-class QZipReader;
+#include "unzip.h"
+
 
 QT_BEGIN_NAMESPACE_XLSX
 
@@ -30,7 +30,7 @@ public:
 private:
     Q_DISABLE_COPY(ZipReader)
     void init();
-    QScopedPointer<QZipReader> m_reader;
+    HZIP m_reader;
     QStringList m_filePaths;
 };
 

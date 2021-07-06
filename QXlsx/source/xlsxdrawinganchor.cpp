@@ -1,4 +1,4 @@
-// xlsxdrawinganchor.cpp
+﻿// xlsxdrawinganchor.cpp
 
 #include <QtGlobal>
 #include <QDebug>
@@ -438,7 +438,6 @@ void DrawingAnchor::loadXmlObjectShape(QXmlStreamReader &reader)
 
     Q_ASSERT(reader.name() == QLatin1String("sp"));
 
-    bool hasoffext = false;
     while (!reader.atEnd())
     {
         reader.readNextStartElement();
@@ -470,146 +469,6 @@ void DrawingAnchor::loadXmlObjectShape(QXmlStreamReader &reader)
             break;
         }
     }
-
-    /*
-
-    bool hasoffext = false;
-    while (!reader.atEnd())
-    {
-        reader.readNextStartElement();
-
-        // qDebug() << __FUNCTION__ << reader.name().toString();
-
-        if (reader.tokenType() == QXmlStreamReader::StartElement)
-        {
-            if (reader.name() == QLatin1String("blip"))
-            {
-                QString rId;
-                sp_blip_rembed= reader.attributes().value(QLatin1String("r:embed")).toString();
-                sp_blip_cstate=reader.attributes().value(QLatin1String("cstate")).toString();
-                rId=sp_blip_rembed;
-                QString name = m_drawing->relationships()->getRelationshipById(rId).target;
-                QString path = QDir::cleanPath(splitPath(m_drawing->filePath())[0] + QLatin1String("/") + name);
-                   bool exist = false;
-                   QList<QSharedPointer<MediaFile> > mfs = m_drawing->workbook->mediaFiles();
-                   for (int i=0; i<mfs.size(); ++i)
-                   {
-                       if (mfs[i]->fileName() == path)
-                       {
-                           //already exist
-                           exist = true;
-                           m_pictureFile = mfs[i];
-                       }
-                   }
-                   if (!exist) {
-                       m_pictureFile = QSharedPointer<MediaFile> (new MediaFile(path));
-                       m_drawing->workbook->addMediaFile(m_pictureFile, true);
-                   }
-            }
-            else if (reader.name() == QLatin1String("off"))
-            {
-               posTA = loadXmlPos(reader);
-               hasoffext=true;
-            }
-            else if (reader.name() == QLatin1String("ext")&&hasoffext)
-            {
-               extTA = loadXmlExt(reader);
-               hasoffext=false;
-            }
-            else if(reader.name() == QLatin1String("blipFill"))
-            {
-                // dev24 : fixed for old Qt 5
-
-                rotWithShapeTA = reader.attributes().value(QLatin1String("rotWithShape")).toString().toInt();
-                dpiTA = reader.attributes().value(QLatin1String("dpi")).toString().toInt();
-
-                // rotWithShapeTA = reader.attributes().value(QLatin1String("rotWithShape")).toInt();
-                // dpiTA = reader.attributes().value(QLatin1String("dpi")).toInt();
-
-            }else if(reader.name() == QLatin1String("cNvPr"))
-            {
-               xsp_cNvPR_name= reader.attributes().value(QLatin1String("name")).toString();
-               xsp_cNvPR_id= reader.attributes().value(QLatin1String("id")).toString();
-            }
-            else if(reader.name() == QLatin1String("spPr"))
-            {
-                xbwMode= reader.attributes().value(QLatin1String("bwMode")).toString();
-            }
-            else if(reader.name() == QLatin1String("prstGeom"))
-            {
-                xprstGeom_prst= reader.attributes().value(QLatin1String("prst")).toString();
-            }
-            else if(reader.name() == QLatin1String("ln"))
-            {
-                xIn_algn= reader.attributes().value(QLatin1String("algn")).toString();
-                xIn_cmpd= reader.attributes().value(QLatin1String("cmpd")).toString();
-                xIn_cap= reader.attributes().value(QLatin1String("cap")).toString();
-                xIn_w= reader.attributes().value(QLatin1String("w")).toString();
-            }
-            else if(reader.name() == QLatin1String("headEnd"))
-            {
-                x_headEnd_w= reader.attributes().value(QLatin1String("w")).toString();
-                x_headEnd_len= reader.attributes().value(QLatin1String("len")).toString();
-                x_headEnd_tyep= reader.attributes().value(QLatin1String("type")).toString();
-            }
-            else if(reader.name() == QLatin1String("tailEnd"))
-            {
-                x_tailEnd_w= reader.attributes().value(QLatin1String("w")).toString();
-                x_tailEnd_len= reader.attributes().value(QLatin1String("len")).toString();
-                x_tailEnd_tyep= reader.attributes().value(QLatin1String("type")).toString();
-            }
-            else if(reader.name() == QLatin1String("lnRef"))
-            {
-                Style_inref_idx= reader.attributes().value(QLatin1String("idx")).toString().trimmed();
-                reader.readNextStartElement();
-                if (reader.tokenType() == QXmlStreamReader::StartElement) {
-                    if(reader.name() == QLatin1String("schemeClr")){
-                        Style_inref_val=reader.attributes().value(QLatin1String("val")).toString().trimmed();
-                    }
-                }
-            }
-            else if(reader.name() == QLatin1String("fillRef"))
-            {
-                style_fillref_idx= reader.attributes().value(QLatin1String("idx")).toString().trimmed();
-                reader.readNextStartElement();
-                if (reader.tokenType() == QXmlStreamReader::StartElement)
-                {
-                    if(reader.name() == QLatin1String("schemeClr"))
-                    {
-                       style_fillref_val=reader.attributes().value(QLatin1String("val")).toString().trimmed();
-                    }
-                }
-            }
-            else if(reader.name() == QLatin1String("effectRef"))
-            {
-                style_effectref_idx= reader.attributes().value(QLatin1String("idx")).toString().trimmed();
-                reader.readNextStartElement();
-                if (reader.tokenType() == QXmlStreamReader::StartElement) {
-                    if(reader.name() == QLatin1String("schemeClr")){
-                      style_effectref_val=reader.attributes().value(QLatin1String("val")).toString().trimmed();
-                    }
-                }
-            }
-            else if(reader.name() == QLatin1String("fontRef"))
-            {
-                style_forntref_idx= reader.attributes().value(QLatin1String("idx")).toString().trimmed();
-                reader.readNextStartElement();
-                if (reader.tokenType() == QXmlStreamReader::StartElement) {
-                    if(reader.name() == QLatin1String("schemeClr")){
-                        style_forntref_val=reader.attributes().value(QLatin1String("val")).toString().trimmed();
-                    }
-                }
-            }
-
-        }
-        else if (reader.tokenType() == QXmlStreamReader::EndElement
-                   && reader.name() == QLatin1String("sp"))
-        {
-            break;
-        }
-    }
-
-    //*/
 
     return;
 }
