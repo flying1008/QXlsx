@@ -1,4 +1,4 @@
-// main.cpp
+﻿// main.cpp
 // QXlsx // MIT License // https://github.com/j2doll/QXlsx
 //
 
@@ -21,14 +21,16 @@ using namespace std;
 #include "xlsxworkbook.h"
 using namespace QXlsx;
 
+#pragma execution_character_set("utf-8")
+
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
 
     // [1]  Writing excel file(*.xlsx)
     QXlsx::Document xlsxW;
-    xlsxW.write("A1", "Hello Qt!"); // write "Hello Qt!" to cell(A,1). it's shared string.
-    if ( xlsxW.saveAs("Test.xlsx") ) // save the document as 'Test.xlsx'
+    xlsxW.write("A1", "你好 Qt!"); // write "Hello Qt!" to cell(A,1). it's shared string.
+    if ( xlsxW.saveAs("D:\\测试文.xlsx") ) // save the document as 'Test.xlsx'
     {
         qDebug() << "[debug] success to write xlsx file";
     }
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
     qDebug() << "[debug] current directory is " << QDir::currentPath();
 
     // [2] Reading excel file(*.xlsx)
-    Document xlsxR("Test.xlsx"); 
+    Document xlsxR("D:\\测试文.xlsx");
     if ( xlsxR.load() ) // load excel file
     {
         qDebug() << "[debug] success to load xlsx file.";
