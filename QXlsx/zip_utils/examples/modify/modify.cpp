@@ -17,7 +17,7 @@ ZRESULT AddFileToZip(const TCHAR *zipfn, const TCHAR *zename, const TCHAR *zefn)
 
 
 
-void main()
+int main()
 { printf("This program shows how to modify an existing zipfile -- add to it, remove from it.\n");
  
   // First we'll create some small files
@@ -47,7 +47,7 @@ void main()
   printf("Updating znc.txt in the zip file...\n");
   AddFileToZip("\\z\\modify.zip","znc.txt","\\z\\c2.txt");
 
-  return;
+  return 0;
 }
 
 

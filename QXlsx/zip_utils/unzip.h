@@ -1,8 +1,16 @@
-﻿#ifndef _unzip_H
+#ifndef _unzip_H
 #define _unzip_H
-
-#ifdef WIN32
-#include <Windows.h>
+//
+#ifdef ZIP_STD
+#include <time.h>
+#define DECLARE_HANDLE(name) struct name##__ { int unused; }; typedef struct name##__ *name
+#ifndef MAX_PATH
+#define MAX_PATH 1024
+#endif
+typedef unsigned long DWORD;
+typedef char TCHAR;
+typedef FILE* HANDLE;
+typedef time_t FILETIME;
 #endif
 
 // UNZIPPING functions -- for unzipping.
@@ -17,7 +25,6 @@
 DECLARE_HANDLE(HZIP);
 #endif
 // An HZIP identifies a zip file that has been opened
-
 
 typedef DWORD ZRESULT;
 // return codes from any of the zip functions. Listed later.

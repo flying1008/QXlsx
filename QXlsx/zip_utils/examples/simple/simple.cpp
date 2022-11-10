@@ -8,7 +8,7 @@ void CreateFiles();
 // will create "\\simple.bmp" and "\\simple.txt" for subsequent zipping
 
 
-void main()
+int main()
 { CreateFiles();
   HZIP hz; DWORD writ;
 
@@ -94,6 +94,7 @@ void main()
   DeleteFile(_T("\\simple.txt"));
   DeleteFile(_T("\\simple.bmp"));
   _tprintf(_T("Deleted 'simple.txt' and 'simple.bmp'\n"));
+  return 0;
 }
 
 
@@ -111,7 +112,7 @@ void CreateFiles()
 { HANDLE hf;
   // Dummy file: bitmap snapshot of screen
   int w=GetSystemMetrics(SM_CXSCREEN), h=GetSystemMetrics(SM_CYSCREEN); 
-  int bw=w/2, bh=h/2; if (bw>320) bw=320; if (bh>240) bh=240; int bw4=(bw+3)&0xFFFFFFFC;
+  int bw=w/2, bh=h/2; if (bw>160) bw=160; if (bh>120) bh=120; int bw4=(bw+3)&0xFFFFFFFC;
 	BITMAPINFO bi; bi.bmiHeader.biBitCount=24; bi.bmiHeader.biClrImportant=0;
 	bi.bmiHeader.biClrUsed=0;	bi.bmiHeader.biCompression=BI_RGB; bi.bmiHeader.biHeight=bh;
 	bi.bmiHeader.biPlanes=1; bi.bmiHeader.biSize=40; bi.bmiHeader.biSizeImage=bw4*bh*3;
